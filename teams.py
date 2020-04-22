@@ -4,6 +4,8 @@
 import json
 import boto3
 import decimal
+from boto3.dynamodb.conditions import Key, Attr
+
 
 # For a Boto3 service resource ('resource' is for higher-level, abstracted access to Dynamo)
 ddb = boto3.resource(
@@ -17,8 +19,7 @@ ddb = boto3.resource(
 table = ddb.Table('Teams')
 
 class Team:
-    def __init__(self, id, name, tech_lead):
-        self.id = id
+    def __init__(self, name, tech_lead):
         self.name = name
         self.tech_lead = tech_lead
         self.members = []
@@ -36,43 +37,41 @@ class Team:
         self.save()
 
     def add_slackroom(self, slackroom):
-        self.members.append(member)
+        self.members.append(slackroom)
         self.save()
     
     def save(self):
         # some dynamo save logic
-        # response = table.put_item(
-        #     Item={
-        #         'name': 'Rel',
-        #         'tech_lead': 'Jav',
-        #         'members': ['Doe','Jim','Jav'],
-        #         'slack_rooms': ['#rel'],
-        #     }
-        # )
-        response = table.get_item(
-            Key={
+        response = table.put_item(
+            Item={
                 'name': self.name,
-                'tech_lead': self.tech_lead
+                'tech_lead': self.tech_lead,
+                'members': self.members,
+                'slack_rooms': self.slack_rooms,
             }
         )
-        # item = response['Item']
-        # print(len(item))
-        # response = table.update_item(
-        #     Key={
-        #         'name': 'Ops',
-        #         'tech_lead': 'Milos'
-        #     },
-        #     UpdateExpression='SET age = :val1',
-        #     ExpressionAttributeValues={
-        #         ':val1': 26
-        #     }
-        # )
-        print(json.dumps(response, indent=4))
+        # print(json.dumps(response, indent=4))
 
 
-teams = []
-teams.append(Team(0, "Ops", "Milos"))
-# print(teams[0].dump())
+# # teams_list = []
+# # teams.append(Team("Ops", "Milos"))
+# # teams.append(Team("Reliability", "Javier"))
+# # # print(teams[0].dump())
 
-teams[0].save()
+# # teams[0].save()
+# # teams[1].save()
+
+# # populate procedure
+# teams_mng = {}
+# response = table.scan()
+# teams = response['Items']
+# for team in teams:
+#     teams_mng[team['name']] = Team(team['name'], team['tech_lead'])
+#     for member in team['members']:
+#         teams_mng[team['name']].add_member(member)
+#     for slack in team['slack_rooms']:
+#         teams_mng[team['name']].add_slackroom(slack)
+#     teams_mng[team['name']].save()
+#     print(team)
+
 

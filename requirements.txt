@@ -4,3 +4,5 @@ fabric
 requests
 boto3
 slackclient==2.0.0
+dynamorm
+marshmallow
