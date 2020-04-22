@@ -1,0 +1,40 @@
+# structure should be something like this 
+
+"Teams":[
+    "Ops":{
+        "Members":{
+            "Artur D",
+            "Artur S",
+        },
+        "SlackRooms":{ #devops, #team-infrastructure },
+        "TechLead":{"Milos"},
+    },
+    "Reliability":{
+        "Members": {"Javier", "Jose"},
+        "SlackRooms":{ #team-reliability },
+        "TechLead":{"Javier"},
+    } 
+]
+
+"Components":[
+    "arnold": {
+        "WhoKnowsEverythingAboutIt": "Artur D"
+        "ResponsibleTeam": "Ops",
+        "RepoLink": "github.com/tuwi/arnold" 
+        "Description": "a bot that helps people"
+    },
+    "gwc": {
+        "WhoKnowsEverythingAboutIt": "Dima"
+        "ResponsibleTeam": "Reliability"
+        "RepoLink": "github.com/tuwi/gwc"
+        "Description": "gateway core "
+    },
+    "webhook": {
+        "WhoKnowsEverythingAboutIt": "Javier"
+        "ResponsibleTeam": "Reliability"
+        "RepoLink": "github.com/tuwi/webhookms"
+        "Description": "something that delivers webhooks"
+    }
+]
+
+
