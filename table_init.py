@@ -3,14 +3,14 @@ import json
 import boto3
 
 
-# For a Boto3 service resource ('resource' is for higher-level, abstracted access to Dynamo)
-ddb = boto3.resource(
-    'dynamodb', 
-    aws_access_key_id="anything", 
-    aws_secret_access_key="anythoing",
-    endpoint_url='http://localhost:8000', 
-    region_name='eu-west-1'
-)
+import json
+import boto3
+import decimal
+from boto3.dynamodb.conditions import Key, Attr
+
+session = boto3.Session(profile_name='dev')
+ddb = session.resource('dynamodb', region_name='eu-west-1')
+
 
 #Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
@@ -43,13 +43,8 @@ def create_table(table_name):
     ddb.create_table(**params)
     return()
 
+# TODO: check if tables already exist
 
-if( len(list(ddb.tables.all())) > 0):
-    print('Tables already there')
-    print(list(ddb.tables.all()))
-else:
-    print('Creating tables')
-    create_table('Teams')
-    create_table('Components')
-
-# ddb.create_table(**params)
+print('Creating tables')
+create_table('Teams')
+create_table('Components')
