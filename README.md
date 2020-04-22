@@ -1,1 +1,1 @@
-# some bot to pinpoint stuff# tonka
+# some bot to help me keep track of teams and microservices and who owns what
