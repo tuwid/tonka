@@ -1,0 +1,6 @@
+websocket-client
+cryptography
+fabric
+requests
+boto3
+slackclient==2.0.0
