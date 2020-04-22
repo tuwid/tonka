@@ -13,7 +13,6 @@ ddb = session.resource('dynamodb', region_name='eu-west-1')
 #     'dynamodb',
 #     aws_access_key_id="anything",
 #     aws_secret_access_key="anythoing",
-
 # )
 
 table = ddb.Table('Teams')
