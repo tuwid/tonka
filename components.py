@@ -14,12 +14,12 @@ class Component:
     def __init__(self, name, responsible_team):
         self.name = name
         self.responsible_team = responsible_team
-        self.repo_link = ""
-        self.description = ""
+        self.repo_link = "set the repo links"
+        self.description = "update me"
 
     def dump(self):
-        print("[ \n\Component:\t" + str(self.name) + "\n\Responsible:\t" + str(self.responsible_team) + "\n\Repo Link:\t" +
-              str(self.repo_link) + "\n\Description\t" + str(self.description) + " \n]")
+        print("[ \n\tComponent:\t" + str(self.name) + "\n\tResponsible:\t" + str(self.responsible_team) + "\n\tRepo Link:\t" +
+              str(self.repo_link) + "\n\tDescription\t" + str(self.description) + " \n]")
 
     def update_description(self, description):
         self.description = description
@@ -43,11 +43,12 @@ class Component:
 # # populate procedure
 components_mng = {}
 response = table.scan()
+# print(response)
 components = response['Items']
 for component in components:
     components_mng[component['name']] = Component(component['name'], component['responsible_team'])
     components_mng[component['name']].update_description(component['description'])
     components_mng[component['name']].update_repolink(component['repo_link'])
 
-# jenkins = Component('Jenkins','Ops')
-# jenkins.save()
+# components_mng['jenkins'] = Component('Jenkins', 'Ops')
+print(components_mng)

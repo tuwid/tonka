@@ -23,17 +23,17 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(o)
 
 
-def create_table(table_name):
+def create_table(table_name, attr):
     # filter + error handling 
     params = {
         'TableName': table_name,
         'KeySchema': [
             {'AttributeName': "name", 'KeyType': "HASH"},    # Partition key
-            {'AttributeName': "tech_lead", 'KeyType': "RANGE"}
+            {'AttributeName': attr, 'KeyType': "RANGE"}
         ],
         'AttributeDefinitions': [
             {'AttributeName': "name", 'AttributeType': "S"},
-            {'AttributeName': "tech_lead", 'AttributeType': "S"},
+            {'AttributeName': attr, 'AttributeType': "S"},
         ],
         'ProvisionedThroughput': {
             'ReadCapacityUnits': 5,
@@ -46,5 +46,5 @@ def create_table(table_name):
 # TODO: check if tables already exist
 
 print('Creating tables')
-create_table('Teams')
-create_table('Components')
+create_table('Teams', 'tech_lead')
+create_table('Components', 'responsible_team')
