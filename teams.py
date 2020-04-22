@@ -49,7 +49,6 @@ class Team:
         self.save()
     
     def save(self):
-        # some dynamo save logic
         response = table.put_item(
             Item={
                 'name': self.name,
@@ -59,8 +58,6 @@ class Team:
             }
         )
         # print(json.dumps(response, indent=4))
-
-
 
 
 # # populate procedure

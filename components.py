@@ -17,22 +17,43 @@ ddb = boto3.resource(
 table = ddb.Table('Components')
 
 class Component:
-    def __init__(self, id, name, responsible_team, repo_link):
-        self.id = id
+    def __init__(self, name, responsible_team):
         self.name = name
         self.responsible_team = responsible_team
-        self.repo_link = repo_link
+        self.repo_link = ""
+        self.description = ""
 
     def dump(self):
-        return("[ " + str(self.name) + " ] - " + self.responsible_team + " - " + str(self.repo_link))
-    
+        print("[ \n\Component:\t" + str(self.name) + "\n\Responsible:\t" + str(self.responsible_team) + "\n\Repo Link:\t" +
+              str(self.repo_link) + "\n\Description\t" + str(self.description) + " \n]")
+
+    def update_description(self, description):
+        self.description = description
+        self.save()
+
+    def update_repolink(self, repo_link):
+        self.repo_link = repo_link
+        self.save()
+
     def save(self):
+        response = table.put_item(
+            Item={
+                'name': self.name,
+                'responsible_team': self.responsible_team,
+                'repo_link': self.repo_link,
+                'description': self.description
+            }
+        )
         # print(json.dumps(response, indent=4))
 
 
-Components = []
-Components.append(Component(0, "Jenkins", "Ops",'github..//'))
-# print(Components[0].dump())
+# # populate procedure
+components_mng = {}
+response = table.scan()
+components = response['Items']
+for component in components:
+    components_mng[component['name']] = Component(component['name'], component['tech_lead'])
+    components_mng[component['name']].update_description(component['description'])
+    components_mng[component['name']].update_repolink(component['repo_link'])
 
-Components[0].save()
-
+components_mng['Dev Jenkins'].dump()
