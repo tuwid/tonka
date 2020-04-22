@@ -42,12 +42,9 @@ class Component:
 # # populate procedure
 components_mng = {}
 response = table.scan()
-# print(response)
 components = response['Items']
 for component in components:
     components_mng[component['name']] = Component(component['name'], component['responsible_team'])
     components_mng[component['name']].update_description(component['description'])
     components_mng[component['name']].update_repolink(component['repo_link'])
-
-# components_mng['jenkins'] = Component('Jenkins', 'Ops')
-print(components_mng)
+    components_mng[component['name']].dump()

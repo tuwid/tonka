@@ -79,6 +79,5 @@ for team in teams:
 # teams_mng['Reliability'].add_member('Javier M')
 # teams_mng['Reliability'].add_member('Jose G')
 # teams_mng['Reliability'].add_slackroom('#team-reliability')   
-
-teams_mng['Reliability'].dump()
-teams_mng['Ops'].dump()
+# teams_mng['Reliability'].dump()
+# teams_mng['Ops'].dump()
