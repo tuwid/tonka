@@ -13,6 +13,7 @@ ddb = boto3.resource(
     endpoint_url='http://localhost:8000',
     region_name='eu-west-1'
 )
+
 table = ddb.Table('Teams')
 
 class Team:
