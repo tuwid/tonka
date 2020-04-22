@@ -26,8 +26,8 @@ class Team:
         self.slack_rooms = []
 
     def dump(self):
-        print("[ \n\t" + str(self.name) + "\n\t" + self.tech_lead + "\n\t" +
-              str(self.members) + "\n\t" + str(self.slack_rooms) + + " ] \n")
+        print("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tMembers:\t" +
+              str(self.members) + "\n\tSlackRooms\t" + str(self.slack_rooms) + " \n]")
 
     def add_member(self, member):
         self.members.append(member)
@@ -75,7 +75,7 @@ for team in teams:
     for slack in team['slack_rooms']:
         teams_mng[team['name']].add_slackroom(slack)
     teams_mng[team['name']].save()
-    print(team)
+    # print(team)
 
 # teams = []
 # teams.append(Team("Ops", "Milos"))
