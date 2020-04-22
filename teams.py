@@ -31,17 +31,16 @@ class Team:
 
     def add_member(self, member):
         self.members.append(member)
-        # self.members = list(dict.fromkeys(self.members))
+        self.members = list(dict.fromkeys(self.members))
         self.save()
     
     def remove_member(self, member):
-        print(type(self.members))
         self.members.remove(member)
         self.save()
 
     def add_slackroom(self, slackroom):
         self.slack_rooms.append(str(slackroom))
-        # self.slack_rooms = list(dict.fromkeys(self.slack_rooms))
+        self.slack_rooms = list(dict.fromkeys(self.slack_rooms))
         self.save()
 
     def remove_slackroom(self, slackroom):
@@ -77,15 +76,13 @@ for team in teams:
     teams_mng[team['name']].save()
     # print(team)
 
-# teams = []
-# teams.append(Team("Ops", "Milos"))
-# teams['Ops'].add_member('Artur D')
-# teams['Ops'].add_member('Milos R')
-# teams['Ops'].add_slackroom('#dev-ops')
-# teams['Ops'].add_slackroom('#team-infrastructure')
-# teams['Ops'].remove_member('#team-infrastructure')
+# teams_mng['Ops'].add_member('Artur D')
+# teams_mng['Ops'].add_member('Milos R')
+# teams_mng['Ops'].add_slackroom('#dev-ops')
+# teams_mng['Ops'].add_slackroom('#team-infrastructure')
 # teams_mng['Reliability'].add_member('Javier M')
 # teams_mng['Reliability'].add_member('Jose G')
 # teams_mng['Reliability'].add_slackroom('#team-reliability')   
-# teams_mng['Reliability'].remove_member('#team-reliability')  
+
 teams_mng['Reliability'].dump()
+teams_mng['Ops'].dump()
