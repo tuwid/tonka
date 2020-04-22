@@ -49,14 +49,14 @@ class Team:
         #         'slack_rooms': ['#dev-ops', '#team-infrastructure'],
         #     }
         # )
-        response = table.get_item(
-            Key={
-                'name': 'Ops',
-                'tech_lead': 'Milos'
-            }
-        )
-        item = response['Item']
-        print(item)
+        # response = table.get_item(
+        #     Key={
+        #         'name': 'Ops',
+        #         'tech_lead': 'Milos'
+        #     }
+        # )
+        # item = response['Item']
+        # print(item)
         # response = table.update_item(
         #     Key={
         #         'name': 'Ops',
