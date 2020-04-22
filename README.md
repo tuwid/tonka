@@ -13,3 +13,7 @@ Teams: ['ops','realiability','finance','core','compliance']
 Members of ops are: ['Tuwi', 'Gazi', 'Berti', 'Mondi']
 
 ```
+
+
+Local development:
+run `docker run -p 8000:8000 amazon/dynamodb-local` and initalize the tables with `python3 table_init.py` 
