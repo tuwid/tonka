@@ -12,21 +12,22 @@ authorized_users = os.environ.get('AUTHORIZED_USERS')
 
 help_menu = """
 This bot supports these cool things:
-*!teams*                                            - list teams
-*!teams add <team> <lead>*                      - add new team ie !teams add PaymentPink @Alaa.C
-*!teams del <team>*                             - remove team ie !teams del Ops
-*!teams add_member <team> <member>*         - add person to team ie !teams add_member Ops @Maciej
-*!teams del_member <team> <member>*         - remove person to team ie !teams add_member Ops @Pedro
-*!teams add_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops #team-amazing
-*!teams del_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops #team-amazing
-*!teams update_lead <team> <member>*      - update the tech lead of the team ie !teams update_lead Ops @Stas
-*!teams show <team>*                            - show data on team ie !teams show Ops
-*!services*                                     - show services
-*!services show <service>*                       - show service data ie !services show dev-jenkins
-*!services add <service> <service_owner>* - add service ie ie !services add dev-jenkins ops
-*!services del <service>*                       - delete service ie !services del dev-jenkins
-*!services update_repo <service> <repo_url>*   - delete service repo ie !services udpate_repo Arnold https://github.com/tuwi/arnold
-*!services update_link <service> <svc_link>*     - update service link !services udpate_link OpsJenkins https://opsjenkins
+*!teams*                                           
+*!teams add <team> <lead>*                    
+*!teams del <team>*                           
+*!teams add_member <team> <member>*         
+*!teams del_member <team> <member>*         
+*!teams add_room <team> <slack_room>*     
+*!teams del_room <team> <slack_room>*     
+*!teams update_po <team> <member>*      
+*!teams show <team>*                      
+
+*!services*                               
+*!services show <service>*                
+*!services add <service> <service_owner>* 
+*!services del <service>*                 
+*!services update_repo <service> <repo_url>*  
+*!services update_link <service> <svc_link>*  
 -*!pci*                                    - show PCI touching components-
 """
 
@@ -83,7 +84,7 @@ def handle_command(command, channel):
 
         if(len(command_array) > 1):
             if(command_array[0] == '!teams'):
-                if(command_array[1] in ['show', 'add', 'del', 'add_member', 'add_room', 'update_po', 'del_member', 'del_room', 'update_lead']):
+                if(command_array[1] in ['show', 'add', 'del', 'add_member', 'add_room', 'update_po', 'del_member', 'del_room']):
                     if command_array[1] == 'add':
                             teams_mng[command_array[2]] = Team(command_array[2], command_array[3])
                             teams_mng[command_array[2]].save()
@@ -102,10 +103,10 @@ def handle_command(command, channel):
                             response = teams_mng[command_array[2]].remove_slackroom(
                                 command_array[3])
                             send_command(slack_client, channel, "Room removed from team")
-                    if command_array[1] == 'update_lead':
-                            response = teams_mng[command_array[2]].update_lead(
-                                command_array[3])
-                            send_command(slack_client, channel, "Lead updated for team")
+                    # if command_array[1] == 'update_lead':
+                    #         response = teams_mng[command_array[2]].update_lead(
+                    #             command_array[3])
+                    #         send_command(slack_client, channel, "Lead updated for team")
                     if command_array[1] == 'update_po':
                             response = teams_mng[command_array[2]].update_po(
                                 command_array[3])

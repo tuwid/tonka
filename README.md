@@ -11,7 +11,7 @@ This bot supports these cool things:
 *!teams del_member <team> <member>*         
 *!teams add_room <team> <slack_room>*     
 *!teams del_room <team> <slack_room>*     
-*!teams update_lead <team> <member>*      
+*!teams update_po <team> <member>*      
 *!teams show <team>*                      
 
 *!services*                               
@@ -22,7 +22,6 @@ This bot supports these cool things:
 *!services update_link <service> <svc_link>*  
 
 ```
-
 
 Local development:
 run `docker run -p 8000:8000 amazon/dynamodb-local` and initalize the tables with `python3 table_init.py` 

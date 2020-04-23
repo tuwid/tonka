@@ -55,7 +55,6 @@ def get_service_names(services_mng):
         # print(t['name'], ' ', t['tech_lead'])
     return names
 
-
 # # populate procedure
 services_mng = {}
 response = table.scan()
@@ -65,4 +64,4 @@ for service in services:
     services_mng[service['name']] = Service(service['name'], service['responsible_team'])
     services_mng[service['name']].update_description(service['description'])
     services_mng[service['name']].update_repolink(service['repo_link'])
-    services_mng[service['name']].dump()
+    # services_mng[service['name']].dump()
