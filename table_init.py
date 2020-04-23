@@ -8,7 +8,9 @@ import boto3
 import decimal
 from boto3.dynamodb.conditions import Key, Attr
 
-session = boto3.Session(profile_name='dev')
+aws_profile = os.environ.get('AWS_PROFILE')
+
+session = boto3.Session(profile_name=aws_profile)
 ddb = session.resource('dynamodb', region_name='eu-west-1')
 
 #Helper class to convert a DynamoDB item to JSON.
