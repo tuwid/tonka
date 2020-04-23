@@ -25,14 +25,13 @@ This bot supports these cool things:
 *!teams del_room <team> <slack_room>*     
 *!teams update_po <team> <member>*      
 *!teams show <team>*                      
-
+-----------------------------------------------
 *!services*                               
 *!services show <service>*                
 *!services add <service> <service_owner>* 
 *!services del <service>*                 
 *!services update_repo <service> <repo_url>*  
 *!services update_link <service> <svc_link>*  
--*!pci*                                    - show PCI touching components-
 """
 
 if authorized_slack_channels:
