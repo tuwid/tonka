@@ -1,10 +1,13 @@
 #!/usr/local/bin/python3
 
+import os
 import json
 import boto3
 import decimal
 
-session = boto3.Session(profile_name='dev')
+aws_profile = os.environ.get('AWS_PROFILE')
+
+session = boto3.Session(profile_name=aws_profile)
 ddb = session.resource('dynamodb', region_name='eu-west-1')
 
 table = ddb.Table('Services')
