@@ -20,13 +20,14 @@ This bot supports these cool things:
 *!teams add_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops #team-amazing
 *!teams del_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops #team-amazing
 *!teams update_lead <team> <member>*      - update the tech lead of the team ie !teams update_lead Ops @Stas
-*!teams list <team>*                            - list data on team ie !teams list Ops
-*!services*                                     - list services
+*!teams show <team>*                            - show data on team ie !teams show Ops
+*!services*                                     - show services
+*!services show <service>*                       - show service data ie !services show dev-jenkins
 *!services add <service> <service_owner>* - add service ie ie !services add dev-jenkins ops
 *!services del <service>*                       - delete service ie !services del dev-jenkins
 *!services update_repo <service> <repo_url>*   - delete service repo ie !services udpate_repo Arnold https://github.com/tuwi/arnold
 *!services update_link <service> <svc_link>*     - update service link !services udpate_link OpsJenkins https://opsjenkins
--*!pci*                                    - list PCI touching components-
+-*!pci*                                    - show PCI touching components-
 """
 
 if authorized_slack_channels:
@@ -82,12 +83,12 @@ def handle_command(command, channel):
 
         if(len(command_array) > 1):
             if(command_array[0] == '!teams'):
-                if(command_array[1] in ['list', 'add', 'del', 'add_member', 'add_room', 'update_po', 'del_member', 'del_room', 'update_lead']):
+                if(command_array[1] in ['show', 'add', 'del', 'add_member', 'add_room', 'update_po', 'del_member', 'del_room', 'update_lead']):
                     if command_array[1] == 'add':
                             teams_mng[command_array[2]] = Team(command_array[2], command_array[3])
                             teams_mng[command_array[2]].save()
                             send_command(slack_client, channel, "Request sent to dynamo")
-                    if command_array[1] == 'list':
+                    if command_array[1] == 'show':
                             response = teams_mng[command_array[2]].dump()
                             send_command(slack_client, channel, response)
                     if command_array[1] == 'add_member':
@@ -113,7 +114,7 @@ def handle_command(command, channel):
                             response = teams_mng[command_array[2]].add_slackroom(command_array[3])
                             send_command(slack_client, channel, "Slack room added to team")
             if(command_array[0] == '!services'):
-                if(command_array[1] in ['list', 'add', 'del', 'update_repo', 'update_link']):
+                if(command_array[1] in ['show', 'add', 'del', 'update_repo', 'update_link']):
                     if command_array[1] == 'add':
                             services_mng[command_array[2]] = Service(
                                 command_array[2], command_array[3])
@@ -130,6 +131,9 @@ def handle_command(command, channel):
                                 command_array[3])
                             send_command(slack_client, channel,
                                          "Request sent to dynamo")
+                    if command_array[1] == 'show':
+                            response =services_mng[command_array[2]].dump()
+                            send_command(slack_client, channel, response)
         # else:
         #     response = 'Invalid command layout, please ask Artur'
         #     send_command(slack_client, channel,response)
