@@ -26,10 +26,10 @@ class Team:
         self.slack_rooms = []
 
     def dump(self):
-        print("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tProduct Owner:\t" + str(self.po) + "\n\tMembers:\t" +
-              str(self.members) + "\n\tSlackRooms\t" + str(self.slack_rooms) + " \n]")
-        return("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tProduct Owner:\t" + str(self.po) + "\n\tMembers:\t" +
-              str(self.members) + "\n\tSlackRooms\t" + str(self.slack_rooms) + " \n]")
+        print("*[* \n\t*Team Name:*\t _ " + str(self.name) + "_ \n\t*Teach Lead*:\t _" + str(self.tech_lead) + "_ \n\t*Product Owner:*\t _" + str(self.po) + "_ \n\t*Members:*\t _" +
+              str(self.members) + "_ \n\tSlackRooms\t _" + str(self.slack_rooms) + "_ \n*]*")
+        return("[ \n\t*Team Name*:\t" + str(self.name) + "\n\t*Teach Lead:*\t" + str(self.tech_lead) + "\n\t*Product Owner:*\t" + str(self.po) + "\n\t*Members:*\t" +
+              str(self.members) + " _ \n\t*SlackRooms*\t _" + str(self.slack_rooms) + " _ \n*]*")
 
     def add_member(self, member):
         self.members.append(member)
@@ -87,11 +87,14 @@ class Team:
 #         print(self.name)
 
 def get_team_names(t_mng):
-    names = []
+    names = "*Team* - _Tech Lead_ - _Product Owner_ \n _==============================_\n"
     for t in t_mng:
-        names.append(t)
-        # print(t['name'], ' ', t['tech_lead'])
+        # print(services_mng[t].name)
+        names += "- *" + t + "* - _" + \
+            str(t_mng[t].tech_lead) + "_ - _" + str(t_mng[t].po) + "_ \n"
     return names
+
+
 
 # # init "team manager"
 teams_mng = {}
@@ -105,7 +108,7 @@ for team in teams:
     for slack in team['slack_rooms']:
         teams_mng[team['name']].add_slackroom(slack)
     teams_mng[team['name']].save()
-    print(team)
+    #print(team)
 
 # teams_mng['Ops'].add_member('Artur D')
 # teams_mng['Ops'].add_slackroom('#dev-ops')

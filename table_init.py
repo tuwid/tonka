@@ -11,7 +11,6 @@ from boto3.dynamodb.conditions import Key, Attr
 session = boto3.Session(profile_name='dev')
 ddb = session.resource('dynamodb', region_name='eu-west-1')
 
-
 #Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
     def default(self, o):
@@ -21,7 +20,6 @@ class DecimalEncoder(json.JSONEncoder):
             else:
                 return int(o)
         return super(DecimalEncoder, self).default(o)
-
 
 def create_table(table_name, attr):
     # filter + error handling 

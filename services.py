@@ -47,11 +47,11 @@ class Service:
         )
         # print(json.dumps(response, indent=4))
 
-
 def get_service_names(services_mng):
-    names = []
+    names = "*(micro)Service* - _Team Responsible_ \n _====================================\n"
     for t in services_mng:
-        names.append(t)
+        # print(services_mng[t].name)
+        names += "- *" + t + "* - _" + str(services_mng[t].responsible_team) + "_ \n"
         # print(t['name'], ' ', t['tech_lead'])
     return names
 

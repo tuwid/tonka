@@ -3,9 +3,12 @@ import time
 import re
 import socket
 from slackclient import SlackClient
+
+print("Retreiving data from dynamo..")
 from teams import *
 from services import *
 
+print("Initializing slack component")
 slack_client = SlackClient(os.environ.get('SLACK_API_KEY'))
 authorized_slack_channels = os.environ.get('AUTHORIZED_SLACK_CHANNELS')
 authorized_users = os.environ.get('AUTHORIZED_USERS')
