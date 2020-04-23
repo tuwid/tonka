@@ -4,25 +4,29 @@ import re
 import socket
 from slackclient import SlackClient
 from teams import *
+from services import *
 
 slack_client = SlackClient(os.environ.get('SLACK_API_KEY'))
 authorized_slack_channels = os.environ.get('AUTHORIZED_SLACK_CHANNELS')
 authorized_users = os.environ.get('AUTHORIZED_USERS')
 
-
 help_menu = """
 This bot supports these cool things:
-*!teams*                                  - list teams
-*!teams add <team> <lead>*                - add new team ie !teams add rugby @Alaa.C
-*!teams del <team>*                       - remove team ie !teams del Ops
-*!teams add_member <team> <member>*         - add person to team ie !teams add_member Ops
-*!teams del_member <team> <member>*         - add person to team ie !teams add_member Ops
-*!teams add_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops
-*!teams del_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops
+*!teams*                                            - list teams
+*!teams add <team> <lead>*                      - add new team ie !teams add PaymentPink @Alaa.C
+*!teams del <team>*                             - remove team ie !teams del Ops
+*!teams add_member <team> <member>*         - add person to team ie !teams add_member Ops @Maciej
+*!teams del_member <team> <member>*         - remove person to team ie !teams add_member Ops @Pedro
+*!teams add_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops #team-amazing
+*!teams del_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops #team-amazing
 *!teams update_lead <team> <member>*      - update the tech lead of the team ie !teams update_lead Ops @Stas
-*!teams list <team>*                      - list data on team ie !teams list Ops
-*!services*                               - list services
-*!pci*                                    - list PCI touching components
+*!teams list <team>*                            - list data on team ie !teams list Ops
+*!services*                                     - list services
+*!services add <service> <service_owner>* - add service ie ie !services add dev-jenkins ops
+*!services del <service>*                       - delete service ie !services del dev-jenkins
+*!services update_repo <service> <repo_url>*   - delete service repo ie !services udpate_repo Arnold https://github.com/tuwi/arnold
+*!services update_link <service> <svc_link>*     - update service link !services udpate_link OpsJenkins https://opsjenkins
+-*!pci*                                    - list PCI touching components-
 """
 
 if authorized_slack_channels:
@@ -40,6 +44,7 @@ trigger_command = '!'
 def parse_bot_commands(slack_events):
     for event in slack_events:
         if event["type"] == "message" and not "subtype" in event:
+            #until we implement proper debug logging levels, this statys here
             # print(event)
             # user_id, message = parse_direct_mention(event["text"])
             # print(user_id, ' ', message)
@@ -71,10 +76,13 @@ def handle_command(command, channel):
         if(command_array == ['!teams']):
             response = get_team_names(teams_mng)
             send_command(slack_client, channel, response)
+        if(command_array == ['!services']):
+            response = get_service_names(services_mng)
+            send_command(slack_client, channel, response)
 
         if(len(command_array) > 1):
-            if(command_array[0] == '!team' or command_array[0] == '!teams'):
-                if(command_array[1] in ['list', 'add', 'delete', 'set', 'add_member', 'add_room', 'update_po', 'del_member', 'del_room', 'update_lead']):
+            if(command_array[0] == '!teams'):
+                if(command_array[1] in ['list', 'add', 'del', 'add_member', 'add_room', 'update_po', 'del_member', 'del_room', 'update_lead']):
                     if command_array[1] == 'add':
                             teams_mng[command_array[2]] = Team(command_array[2], command_array[3])
                             teams_mng[command_array[2]].save()
@@ -104,9 +112,27 @@ def handle_command(command, channel):
                     if command_array[1] == 'add_room':
                             response = teams_mng[command_array[2]].add_slackroom(command_array[3])
                             send_command(slack_client, channel, "Slack room added to team")
-        else:
-            response = 'Invalid command layout, please ask Artur'
-            send_command(slack_client, channel,response)
+            if(command_array[0] == '!services'):
+                if(command_array[1] in ['list', 'add', 'del', 'update_repo', 'update_link']):
+                    if command_array[1] == 'add':
+                            services_mng[command_array[2]] = Service(
+                                command_array[2], command_array[3])
+                            services_mng[command_array[2]].save()
+                            send_command(slack_client, channel,
+                                         "Request sent to dynamo")
+                    if command_array[1] == 'update_repo':
+                            services_mng[command_array[2]].update_repolink(
+                                command_array[3])
+                            send_command(slack_client, channel,
+                                         "Request sent to dynamo")
+                    if command_array[1] == 'update_link':
+                            services_mng[command_array[2]].update_servicelink(
+                                command_array[3])
+                            send_command(slack_client, channel,
+                                         "Request sent to dynamo")
+        # else:
+        #     response = 'Invalid command layout, please ask Artur'
+        #     send_command(slack_client, channel,response)
 
 
 if __name__ == "__main__":
