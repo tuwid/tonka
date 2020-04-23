@@ -26,9 +26,9 @@ class Team:
         self.slack_rooms = []
 
     def dump(self):
-        print("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tMembers:\t" +
+        print("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tProduct Owner:\t" + str(self.po) + "\n\tMembers:\t" +
               str(self.members) + "\n\tSlackRooms\t" + str(self.slack_rooms) + " \n]")
-        return("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tMembers:\t" +
+        return("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tProduct Owner:\t" + str(self.po) + "\n\tMembers:\t" +
               str(self.members) + "\n\tSlackRooms\t" + str(self.slack_rooms) + " \n]")
 
     def add_member(self, member):
@@ -46,8 +46,15 @@ class Team:
         self.save()
 
     def remove_slackroom(self, slackroom):
-        print(type(self.slack_rooms))
         self.slack_rooms.remove(slackroom)
+        self.save()
+
+    def update_lead(self, t_lead):
+        self.tech_lead = t_lead
+        self.save()
+
+    def update_po(self, po):
+        self.po = po
         self.save()
     
     def save(self):
@@ -92,6 +99,7 @@ response = table.scan()
 teams = response['Items']
 for team in teams:
     teams_mng[team['name']] = Team(team['name'], team['tech_lead'])
+    teams_mng[team['name']].update_po(team['product_owner'])
     for member in team['members']:
         teams_mng[team['name']].add_member(member)
     for slack in team['slack_rooms']:

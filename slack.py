@@ -19,6 +19,7 @@ This bot supports these cool things:
 *!teams del_member <team> <member>*         - add person to team ie !teams add_member Ops
 *!teams add_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops
 *!teams del_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops
+*!teams update_lead <team> <member>*      - update the tech lead of the team ie !teams update_lead Ops @Stas
 *!teams list <team>*                      - list data on team ie !teams list Ops
 *!services*                               - list services
 *!pci*                                    - list PCI touching components
@@ -73,7 +74,7 @@ def handle_command(command, channel):
 
         if(len(command_array) > 1):
             if(command_array[0] == '!team' or command_array[0] == '!teams'):
-                if(command_array[1] in ['list', 'add', 'delete', 'set', 'add_member', 'add_room', 'del_member', 'del_room']):
+                if(command_array[1] in ['list', 'add', 'delete', 'set', 'add_member', 'add_room', 'update_po', 'del_member', 'del_room', 'update_lead']):
                     if command_array[1] == 'add':
                             teams_mng[command_array[2]] = Team(command_array[2], command_array[3])
                             teams_mng[command_array[2]].save()
@@ -92,6 +93,14 @@ def handle_command(command, channel):
                             response = teams_mng[command_array[2]].remove_slackroom(
                                 command_array[3])
                             send_command(slack_client, channel, "Room removed from team")
+                    if command_array[1] == 'update_lead':
+                            response = teams_mng[command_array[2]].update_lead(
+                                command_array[3])
+                            send_command(slack_client, channel, "Lead updated for team")
+                    if command_array[1] == 'update_po':
+                            response = teams_mng[command_array[2]].update_po(
+                                command_array[3])
+                            send_command(slack_client, channel, "PO updated for team")
                     if command_array[1] == 'add_room':
                             response = teams_mng[command_array[2]].add_slackroom(command_array[3])
                             send_command(slack_client, channel, "Slack room added to team")
