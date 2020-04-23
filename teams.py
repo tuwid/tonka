@@ -21,11 +21,14 @@ class Team:
     def __init__(self, name, tech_lead):
         self.name = name
         self.tech_lead = tech_lead
+        self.po = "-"
         self.members = []
         self.slack_rooms = []
 
     def dump(self):
         print("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tMembers:\t" +
+              str(self.members) + "\n\tSlackRooms\t" + str(self.slack_rooms) + " \n]")
+        return("[ \n\tTeam Name:\t" + str(self.name) + "\n\tTeach Lead:\t" + str(self.tech_lead) + "\n\tMembers:\t" +
               str(self.members) + "\n\tSlackRooms\t" + str(self.slack_rooms) + " \n]")
 
     def add_member(self, member):
@@ -52,6 +55,7 @@ class Team:
             Item={
                 'name': self.name,
                 'tech_lead': self.tech_lead,
+                'product_owner': self.po,
                 'members': self.members,
                 'slack_rooms': self.slack_rooms,
             }
@@ -59,7 +63,30 @@ class Team:
         # print(json.dumps(response, indent=4))
 
 
-# # populate procedure
+# class TeamsManager:
+#     def __init__(self, name):
+#         self.name = name
+#         self.teams = []
+#         self.teams_list = []
+
+#     def add_team(self,t):
+#         self.teams.append(t)
+#         self.data
+
+#     def dump(self):
+#         print(self.name)
+
+#     def get_data(self):
+#         print(self.name)
+
+def get_team_names(t_mng):
+    names = []
+    for t in t_mng:
+        names.append(t)
+        # print(t['name'], ' ', t['tech_lead'])
+    return names
+
+# # init "team manager"
 teams_mng = {}
 response = table.scan()
 teams = response['Items']
@@ -70,14 +97,11 @@ for team in teams:
     for slack in team['slack_rooms']:
         teams_mng[team['name']].add_slackroom(slack)
     teams_mng[team['name']].save()
-    # print(team)
+    print(team)
 
 # teams_mng['Ops'].add_member('Artur D')
-# teams_mng['Ops'].add_member('Milos R')
 # teams_mng['Ops'].add_slackroom('#dev-ops')
-# teams_mng['Ops'].add_slackroom('#team-infrastructure')
 # teams_mng['Reliability'].add_member('Javier M')
-# teams_mng['Reliability'].add_member('Jose G')
 # teams_mng['Reliability'].add_slackroom('#team-reliability')   
 # teams_mng['Reliability'].dump()
 # teams_mng['Ops'].dump()

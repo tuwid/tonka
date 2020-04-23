@@ -3,6 +3,7 @@ import time
 import re
 import socket
 from slackclient import SlackClient
+from teams import *
 
 slack_client = SlackClient(os.environ.get('SLACK_API_KEY'))
 authorized_slack_channels = os.environ.get('AUTHORIZED_SLACK_CHANNELS')
@@ -11,7 +12,16 @@ authorized_users = os.environ.get('AUTHORIZED_USERS')
 
 help_menu = """
 This bot supports these cool things:
-
+*!teams*                                  - list teams
+*!teams add <team> <lead>*                - add new team ie !teams add rugby @Alaa.C
+*!teams del <team>*                       - remove team ie !teams del Ops
+*!teams add_member <team> <member>*         - add person to team ie !teams add_member Ops
+*!teams del_member <team> <member>*         - add person to team ie !teams add_member Ops
+*!teams add_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops
+*!teams del_room <team> <slack_room>*     - add slack room to team ie !teams add_slack Ops
+*!teams list <team>*                      - list data on team ie !teams list Ops
+*!services*                               - list services
+*!pci*                                    - list PCI touching components
 """
 
 if authorized_slack_channels:
@@ -25,7 +35,6 @@ if authorized_users:
 RTM_READ_DELAY = 1  # 1 second delay between reading from RTM
 starterbot_id = None
 trigger_command = '!'
-
 
 def parse_bot_commands(slack_events):
     for event in slack_events:
@@ -58,13 +67,34 @@ def handle_command(command, channel):
         if(command_array == ['!help']):
             response = help_menu
             send_command(slack_client, channel, response)
+        if(command_array == ['!teams']):
+            response = get_team_names(teams_mng)
+            send_command(slack_client, channel, response)
 
         if(len(command_array) > 1):
-            if command_array[0] == '!ipsec':
-                if(command_array[1] in ['teams', 'components','help']):
-                    if command_array[1] == 'teams':
-                        response = "teams \n"
-                        send_command(slack_client, channel, response)
+            if(command_array[0] == '!team' or command_array[0] == '!teams'):
+                if(command_array[1] in ['list', 'add', 'delete', 'set', 'add_member', 'add_room', 'del_member', 'del_room']):
+                    if command_array[1] == 'add':
+                            teams_mng[command_array[2]] = Team(command_array[2], command_array[3])
+                            teams_mng[command_array[2]].save()
+                            send_command(slack_client, channel, "Request sent to dynamo")
+                    if command_array[1] == 'list':
+                            response = teams_mng[command_array[2]].dump()
+                            send_command(slack_client, channel, response)
+                    if command_array[1] == 'add_member':
+                            response = teams_mng[command_array[2]].add_member(command_array[3])
+                            send_command(slack_client, channel, "Member added to team")
+                    if command_array[1] == 'del_member':
+                            response = teams_mng[command_array[2]].remove_member(
+                                command_array[3])
+                            send_command(slack_client, channel, "Member removed from team")
+                    if command_array[1] == 'del_room':
+                            response = teams_mng[command_array[2]].remove_slackroom(
+                                command_array[3])
+                            send_command(slack_client, channel, "Room removed from team")
+                    if command_array[1] == 'add_room':
+                            response = teams_mng[command_array[2]].add_slackroom(command_array[3])
+                            send_command(slack_client, channel, "Slack room added to team")
         else:
             response = 'Invalid command layout, please ask Artur'
             send_command(slack_client, channel,response)
