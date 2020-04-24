@@ -38,9 +38,9 @@ if authorized_slack_channels:
     authorized_slack_channels = authorized_slack_channels.split(",")
 
 # List of email addresses of the authorized users
-authorized_users = os.environ.get('AUTHORIZED_USERS')
-if authorized_users:
-    authorized_users = authorized_users.split(",")
+# authorized_users = os.environ.get('AUTHORIZED_USERS')
+# if authorized_users:
+#     authorized_users = authorized_users.split(",")
 
 RTM_READ_DELAY = 1  # 1 second delay between reading from RTM
 starterbot_id = None
@@ -169,14 +169,14 @@ if __name__ == "__main__":
                             send_command(
                                 slack_client, channel, "This Slack channel is not authorized to execute Arnold commands")
                         continue
-                if authorized_users:
-                    if user_name not in authorized_users:
-                        if command.startswith(trigger_command):
-                            print("Received command from unauthorized user {}, only commands from users {} will be accepted".format(
-                                user_name, str(authorized_users)))
-                            send_command(slack_client, channel, "{}, you are not authorized to execute {} command".format(
-                                user_name, str(command)))
-                        continue
+                # if authorized_users:
+                #     if user_name not in authorized_users:
+                #         if command.startswith(trigger_command):
+                #             print("Received command from unauthorized user {}, only commands from users {} will be accepted".format(
+                #                 user_name, str(authorized_users)))
+                #             send_command(slack_client, channel, "{}, you are not authorized to execute {} command".format(
+                #                 user_name, str(command)))
+                #         continue
                 handle_command(command, channel)
             time.sleep(RTM_READ_DELAY)
     else:
