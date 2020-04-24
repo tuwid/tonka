@@ -46,5 +46,5 @@ def create_table(table_name, attr):
 # TODO: check if tables already exist
 
 print('Creating tables')
-# create_table('Teams', 'tech_lead')
+create_table('Teams', 'tech_lead')
 create_table('Services', 'responsible_team')

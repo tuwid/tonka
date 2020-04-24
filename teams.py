@@ -24,7 +24,7 @@ class Team:
         self.name = name
         self.tech_lead = tech_lead
         self.po = "-"
-        self.members = []
+        self.members = [tech_lead]
         self.slack_rooms = []
 
     def dump(self):

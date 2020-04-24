@@ -50,12 +50,17 @@ class Service:
         # print(json.dumps(response, indent=4))
 
 def get_service_names(services_mng):
-    names = "*(micro)Service* - _Team Responsible_ \n _====================================\n"
+    data = "*Team Responsible* - _(micro)Services_ \n"
+    by_teams = {}
     for t in services_mng:
-        # print(services_mng[t].name)
-        names += "- *" + t + "* - _" + str(services_mng[t].responsible_team) + "_ \n"
-        # print(t['name'], ' ', t['tech_lead'])
-    return names
+        if(services_mng[t].responsible_team not in by_teams):
+            by_teams[services_mng[t].responsible_team] = ""
+        by_teams[services_mng[t].responsible_team] += "_" + t + "_, "
+        # names += "- *" + t + "* - _" + str(services_mng[t].responsible_team) + "_ \n"
+    for t in by_teams:
+        data += "\n*" + str(t) + "*:\n " + str(by_teams[t])
+    
+    return data
 
 # # populate procedure
 services_mng = {}
