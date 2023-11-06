@@ -33,9 +33,9 @@ class Team:
         self.slack_rooms = []
 
     def dump(self):
-        print("*[* \n\t*Team Name:*\t _ " + str(self.name) + "_ \n\t*Teach Lead*:\t _" + str(self.tech_lead) + "_ \n\t*Product Owner:*\t _" + str(self.po) + "_ \n\t*Members:*\t _" +
+        print("*[* \n\t*Team Name:*\t _ " + str(self.name) + "_ \n\t*Tech Lead*:\t _" + str(self.tech_lead) + "_ \n\t*Product Owner:*\t _" + str(self.po) + "_ \n\t*Members:*\t _" +
               str(self.members) + "_ \n\tSlackRooms\t _" + str(self.slack_rooms) + "_ \n*]*")
-        return("[ \n\t*Team Name*:\t" + str(self.name) + "\n\t*Teach Lead:*\t" + str(self.tech_lead) + "\n\t*Product Owner:*\t" + str(self.po) + "\n\t*Members:*\t" +
+        return("[ \n\t*Team Name*:\t" + str(self.name) + "\n\t*Tech Lead:*\t" + str(self.tech_lead) + "\n\t*Product Owner:*\t" + str(self.po) + "\n\t*Members:*\t" +
               str(self.members) + " _ \n\t*SlackRooms*\t _" + str(self.slack_rooms) + " _ \n*]*")
 
     def add_member(self, member):
