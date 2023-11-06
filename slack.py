@@ -11,8 +11,8 @@ from services import *
 
 print("Initializing slack component")
 slack_client = SlackClient(os.environ.get('SLACK_API_KEY'))
-authorized_slack_channels = os.environ.get('AUTHORIZED_SLACK_CHANNELS')
-authorized_users = os.environ.get('AUTHORIZED_USERS')
+# authorized_slack_channels = os.environ.get('AUTHORIZED_SLACK_CHANNELS')
+# authorized_users = os.environ.get('AUTHORIZED_USERS')
 
 help_menu = """
 This bot supports these cool things:
@@ -34,8 +34,8 @@ This bot supports these cool things:
 *!services update_link <service> <svc_link>*  
 """
 
-if authorized_slack_channels:
-    authorized_slack_channels = authorized_slack_channels.split(",")
+# if authorized_slack_channels:
+#     authorized_slack_channels = authorized_slack_channels.split(",")
 
 # List of email addresses of the authorized users
 # authorized_users = os.environ.get('AUTHORIZED_USERS')
@@ -50,7 +50,7 @@ def parse_bot_commands(slack_events):
     for event in slack_events:
         if event["type"] == "message" and not "subtype" in event:
             #until we implement proper debug logging levels, this statys here
-            # print(event)
+            print("Handling event: " + str(event))
             # user_id, message = parse_direct_mention(event["text"])
             # print(user_id, ' ', message)
             # if user_id == starterbot_id:
@@ -65,7 +65,6 @@ def send_command(slack_client, channel, text):
         channel=channel,
         text=text
     )
-
 
 def handle_command(command, channel):
     default_response = "Not sure what you mean. Try *{}* help.".format(
@@ -150,25 +149,24 @@ if __name__ == "__main__":
         starterbot_id = slack_client.api_call("auth.test")["user_id"]
 
         while True:
-            command, channel, user = parse_bot_commands(
-                slack_client.rtm_read())
+            command, channel, user = parse_bot_commands(slack_client.rtm_read())
+            # print("About to handling", command, channel, user)
             if command:
-                try:
-                    channel_info = slack_client.api_call(
-                        "channels.info", channel=channel)
-                    channel_name = channel_info["channel"]["name"]
-                    user_info = slack_client.api_call("users.info", user=user)
-                    user_name = user_info["user"]["profile"]["email"]
-                except Exception:
-                    continue
-                if authorized_slack_channels:
-                    if channel_name not in authorized_slack_channels:
-                        if command.startswith(trigger_command):
-                            print("Received command from unauthorized slack channel {}, only commands from channels {} will be accepted".format(
-                                channel_name, str(authorized_slack_channels)))
-                            send_command(
-                                slack_client, channel, "This Slack channel is not authorized to execute Arnold commands")
-                        continue
+                # try:
+                #     channel_info = slack_client.api_call("channels.info", channel=channel)
+                #     channel_name = channel_info["channel"]["name"]
+                #     user_info = slack_client.api_call("users.info", user=user)
+                #     user_name = user_info["user"]["profile"]["email"]
+                # except Exception:
+                #     continue
+                # if authorized_slack_channels:
+                #     if channel_name not in authorized_slack_channels:
+                #         if command.startswith(trigger_command):
+                #             print("Received command from unauthorized slack channel {}, only commands from channels {} will be accepted".format(
+                #                 channel_name, str(authorized_slack_channels)))
+                #             send_command(
+                #                 slack_client, channel, "This Slack channel is not authorized to execute Arnold commands")
+                #         continue
                 # if authorized_users:
                 #     if user_name not in authorized_users:
                 #         if command.startswith(trigger_command):

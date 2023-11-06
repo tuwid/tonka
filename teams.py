@@ -5,10 +5,15 @@ import boto3
 import decimal
 from boto3.dynamodb.conditions import Key, Attr
 
+aws_region = "eu-north-1"
+aws_profile = os.environ.get('AWS_PROFILE')
+if os.environ.get('AWS_REGION'):
+    aws_region = os.environ.get('AWS_REGION')
+
 aws_profile = os.environ.get('AWS_PROFILE')
 
 session = boto3.Session(profile_name=aws_profile)
-ddb = session.resource('dynamodb', region_name='eu-west-1')
+ddb = session.resource('dynamodb', region_name=aws_region)
 
 # For a Boto3 service resource ('resource' is for higher-level, abstracted access to Dynamo)
 # ddb = boto3.resource(
